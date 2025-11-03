@@ -143,9 +143,9 @@ async def health_check():
 
 @app.get("/tasks", response_model=List[Task])
 async def get_tasks(
-    status: Optional[TaskStatus] = None,
-    priority: Optional[TaskPriority] = None,
-    assignee: Optional[str] = None
+        status: Optional[TaskStatus] = None,
+        priority: Optional[TaskPriority] = None,
+        assignee: Optional[str] = None
 ) -> List[Task]:
     """
     Get all tasks with optional filtering.
@@ -208,52 +208,37 @@ async def create_task(task_data: TaskCreate) -> Task:
 async def update_task(task_id: int, updates: TaskUpdate) -> Task:
     """
     Update an existing task (partial update supported).
-
-    TODO (Atelier 1 - Exercice 2): Implémenter cette fonction
-
-    Étapes à suivre:
-    1. Vérifier que la tâche existe dans tasks_db
-       - Si elle n'existe pas, lever HTTPException(status_code=404, detail=f"Task {task_id} not found")
-
-    2. Récupérer la tâche existante
-
-    3. Extraire les champs à mettre à jour avec updates.model_dump(exclude_unset=True)
-
-    4. Valider le titre s'il est fourni (ne doit pas être vide)
-       - Si vide, lever HTTPException(status_code=422, detail="Title cannot be empty")
-
-    5. Créer une nouvelle Task avec:
-       - Les champs mis à jour (utiliser update_data.get("field", existing_task.field))
-       - created_at = existing_task.created_at (ne change pas)
-       - updated_at = datetime.utcnow() (nouvelle date)
-
-    6. Mettre à jour tasks_db[task_id]
-
-    7. Retourner la tâche mise à jour
-
-    Indice: Regardez comment create_task fonctionne pour vous inspirer
     """
-    # TODO: Votre code ici
-    raise HTTPException(status_code=501, detail="Update not implemented yet - complete this function!")
+
+    if task_id not in tasks_db:
+        raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+
+    task: Task = tasks_db[task_id]
+    fields_to_update: dict = updates.model_dump(exclude_unset=True)
+    if fields_to_update.get("title") == "":
+        raise HTTPException(status_code=422, detail="Title cannot be empty")
+
+    new_task: Task = Task(
+        id=task_id,
+        title=fields_to_update.get("title", task.title),
+        description=fields_to_update.get("description", task.description),
+        status=fields_to_update.get("status", task.status),
+        priority=fields_to_update.get("priority", task.priority),
+        assignee=fields_to_update.get("assignee", task.assignee),
+        due_date=fields_to_update.get("due_date", task.due_date),
+        created_at=task.created_at,
+        updated_at=datetime.utcnow(),
+    )
+
+    tasks_db[task_id] = new_task
+    logger.info(f"Task updated successfully: {task_id}")
+    return new_task
 
 
 @app.delete("/tasks/{task_id}", status_code=204)
 async def delete_task(task_id: int):
     """
     Delete a task by ID.
-
-    TODO (TP 1 - Exercice 1): Implémenter cette fonction
-
-    Étapes à suivre:
-    1. Vérifier que la tâche existe dans tasks_db
-       - Si elle n'existe pas, lever HTTPException(status_code=404, detail=f"Task {task_id} not found")
-
-    2. Supprimer la tâche du dictionnaire tasks_db
-       - Utiliser: del tasks_db[task_id]
-
-    3. Retourner None (car status_code=204 n'a pas de body)
-
-    Indice: C'est très simple, seulement 3 lignes de code !
     """
     if task_id not in tasks_db:
         raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
@@ -261,6 +246,8 @@ async def delete_task(task_id: int):
     del tasks_db[task_id]
     return None
 
+
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
