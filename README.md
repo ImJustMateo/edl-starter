@@ -1,5 +1,11 @@
 # 🚀 EDL Starter - Code de Démarrage
 
+# TaskFlow API
+
+[![CI Pipeline](https://github.com/ImJustMateo/edl-starter/actions/workflows/ci-pipeline.yml/badge.svg?branch=main)](https://github.com/ImJustMateo/edl-starter/actions/workflows/ci-pipeline.yml)
+[![Backend Tests](https://github.com/ImJustMateo/edl-starter/actions/workflows/backend.yml/badge.svg?branch=main)](https://github.com/ImJustMateo/edl-starter/actions/workflows/backend.yml)
+[![Frontend Tests](https://github.com/ImJustMateo/edl-starter/actions/workflows/frontend.yml/badge.svg?branch=main)](https://github.com/ImJustMateo/edl-starter/actions/workflows/frontend.yml)
+
 Bienvenue dans le code de démarrage pour les ateliers d'Environnement de Développement Logiciel (EDL) !
 
 ## 📦 Contenu
@@ -42,6 +48,7 @@ cd edl-starter
 📄 **Documentation :** Voir [`docs/TP-1.md`](../docs/TP-1.md) ou [`docs/TP-1.pdf`](../docs/TP-1.pdf)
 
 **Ce que vous allez faire :**
+
 - ✅ Installer les dépendances (UV ou pip)
 - ✅ Lancer le backend et le frontend localement
 - ✅ Écrire des tests backend avec pytest
@@ -71,6 +78,7 @@ npm run dev
 📄 **Documentation :** Voir [`docs/TP-2.md`](../docs/TP-2.md)
 
 **Ce que vous allez faire :**
+
 - ✅ Créer un workflow GitHub Actions
 - ✅ Tester automatiquement backend + frontend
 - ✅ Vérifier la couverture de code sur CI
@@ -85,6 +93,7 @@ npm run dev
 📄 **Documentation :** Voir [`docs/TP-3.md`](../docs/TP-3.md)
 
 **Ce que vous allez faire :**
+
 - ✅ Migrer de stockage en mémoire vers PostgreSQL
 - ✅ Déployer sur Render
 - ✅ Configurer les variables d'environnement
@@ -198,6 +207,7 @@ VITE_API_URL=http://localhost:8000
 ## 📚 Technologies Utilisées
 
 ### Backend
+
 - **FastAPI** - Framework web moderne et rapide
 - **pytest** - Framework de tests Python
 - **pytest-cov** - Couverture de code
@@ -206,6 +216,7 @@ VITE_API_URL=http://localhost:8000
 - **UV** - Gestionnaire de paquets Python moderne
 
 ### Frontend
+
 - **React 18** - Framework UI
 - **TypeScript** - Typage statique
 - **Vitest** - Framework de tests
@@ -264,13 +275,15 @@ npm test -- --reporter=verbose
 
 ### Stockage en Mémoire (TP 1-2)
 
-⚠️ Les données sont **stockées en mémoire** (dictionnaire Python). Si vous redémarrez le backend, **toutes les données sont perdues**.
+⚠️ Les données sont **stockées en mémoire** (dictionnaire Python). Si vous redémarrez le backend, **toutes les données
+sont perdues**.
 
 C'est **intentionnel** pour simplifier l'apprentissage des tests unitaires.
 
 ### Migration vers PostgreSQL (TP 3)
 
 Dans le TP 3, vous allez :
+
 1. Créer une base de données PostgreSQL
 2. Configurer SQLAlchemy
 3. Migrer le code pour utiliser la DB
