@@ -26,7 +26,7 @@ jobs:
       - name: Run frontend tests
         run: |
           cd frontend
-          npm test -- -run
+          npm test -- --run
 
       - name: Verify frontend build
         run: |
