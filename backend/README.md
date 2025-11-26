@@ -1,6 +1,13 @@
+# TaskFlow API
+
+[![CI Pipeline](https://github.com/ImJustMateo/edl-starter/actions/workflows/ci-pipeline.yml/badge.svg?branch=main)](https://github.com/ImJustMateo/edl-starter/actions/workflows/ci-pipeline.yml)
+[![Backend Tests](https://github.com/ImJustMateo/edl-starter/actions/workflows/backend.yml/badge.svg?branch=main)](https://github.com/ImJustMateo/edl-starter/actions/workflows/backend.yml)
+[![Frontend Tests](https://github.com/ImJustMateo/edl-starter/actions/workflows/frontend.yml/badge.svg?branch=main)](https://github.com/ImJustMateo/edl-starter/actions/workflows/frontend.yml)
+
 # TaskFlow Backend
 
 Service backend FastAPI avec stockage progressif :
+
 - **Atelier 1-2** : Stockage en mémoire (dictionnaire Python simple)
 - **Atelier 3** : Migration vers PostgreSQL pour la persistance
 
@@ -54,7 +61,8 @@ docker run --name taskflow-postgres \
 
 2. **Modifier app.py pour utiliser la base de données :**
 
-Vous devrez modifier `src/app.py` pour utiliser `database.py` et `models.py` au lieu du stockage en mémoire. Voir le guide de migration dans l'Atelier 3.
+Vous devrez modifier `src/app.py` pour utiliser `database.py` et `models.py` au lieu du stockage en mémoire. Voir le
+guide de migration dans l'Atelier 3.
 
 3. **Mettre à jour .env :**
 
@@ -128,7 +136,8 @@ backend/
 └── README.md
 ```
 
-**Note :** Les fichiers `database.py`, `models.py` et `db_init.py` sont prêts pour l'Atelier 3 mais **non utilisés** dans Atelier 1-2.
+**Note :** Les fichiers `database.py`, `models.py` et `db_init.py` sont prêts pour l'Atelier 3 mais **non utilisés**
+dans Atelier 1-2.
 
 ## 🗄️ Stockage des Données
 
@@ -142,30 +151,33 @@ next_id = 1  # Auto-incrémentation des IDs
 ```
 
 **Avantages :**
+
 - Simple à comprendre
 - Aucune configuration nécessaire
 - Parfait pour apprendre les tests
 
 **Inconvénient :**
+
 - Les données sont perdues au redémarrage (c'est intentionnel !)
 
 ### Atelier 3 : Base de Données PostgreSQL
 
 **Table : tasks**
 
-| Colonne | Type | Contraintes |
-|--------|------|-------------|
-| id | Integer | PRIMARY KEY |
-| title | String(200) | NOT NULL |
-| description | String(1000) | NULL |
-| status | Enum | NOT NULL, DEFAULT 'todo' |
-| priority | Enum | NOT NULL, DEFAULT 'medium' |
-| assignee | String(100) | NULL |
-| due_date | DateTime | NULL |
-| created_at | DateTime | NOT NULL, DEFAULT now() |
-| updated_at | DateTime | NOT NULL, ON UPDATE now() |
+| Colonne     | Type         | Contraintes                |
+|-------------|--------------|----------------------------|
+| id          | Integer      | PRIMARY KEY                |
+| title       | String(200)  | NOT NULL                   |
+| description | String(1000) | NULL                       |
+| status      | Enum         | NOT NULL, DEFAULT 'todo'   |
+| priority    | Enum         | NOT NULL, DEFAULT 'medium' |
+| assignee    | String(100)  | NULL                       |
+| due_date    | DateTime     | NULL                       |
+| created_at  | DateTime     | NOT NULL, DEFAULT now()    |
+| updated_at  | DateTime     | NOT NULL, ON UPDATE now()  |
 
 **Enums :**
+
 - **TaskStatus** : `todo`, `in_progress`, `done`
 - **TaskPriority** : `low`, `medium`, `high`
 
@@ -247,6 +259,7 @@ DELETE /tasks/{task_id}
 ### Test Configuration
 
 Tests use:
+
 - **In-memory SQLite** database
 - **Fresh database** for each test
 - **Dependency injection** override for test DB
@@ -284,11 +297,13 @@ def test_with_database(db_session):
 ### Render Configuration
 
 **Build Command:**
+
 ```bash
 pip install uv && uv sync
 ```
 
 **Start Command:**
+
 ```bash
 uv run uvicorn src.app:app --host 0.0.0.0 --port $PORT
 ```
@@ -323,13 +338,17 @@ PGPASSWORD=<password> psql -h <host> -U <user> <database>
 
 ```sql
 -- List all tasks
-SELECT * FROM tasks;
+SELECT *
+FROM tasks;
 
 -- Count tasks by status
-SELECT status, COUNT(*) FROM tasks GROUP BY status;
+SELECT status, COUNT(*)
+FROM tasks
+GROUP BY status;
 
 -- Show table schema
-\d tasks
+\d
+tasks
 ```
 
 ## 📝 Common Commands
@@ -355,6 +374,7 @@ uv lock                                    # Update lock file
 ### Issue: "ModuleNotFoundError: No module named 'sqlalchemy'"
 
 **Solution:**
+
 ```bash
 uv sync
 ```
@@ -362,6 +382,7 @@ uv sync
 ### Issue: "Relation 'tasks' does not exist"
 
 **Solution:** Tables not created. Restart the app or run:
+
 ```bash
 uv run python src/db_init.py
 ```
@@ -369,6 +390,7 @@ uv run python src/db_init.py
 ### Issue: "Connection refused" to PostgreSQL
 
 **Solution:** Check that PostgreSQL is running:
+
 ```bash
 docker ps  # Should show taskflow-postgres
 ```
